@@ -85,7 +85,9 @@ function App() {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const speak = (text, lang) => {
@@ -140,7 +142,7 @@ function App() {
               </Paper>
             </ListItem>
           ))}
-          <div ref={messagesEndRef} />
+          <div ref={messagesEndRef}></div>
         </List>
       </Paper>
 
