@@ -26,6 +26,7 @@ function App() {
   const [error, setError] = useState(null);
   const [welcomeMessageSent, setWelcomeMessageSent] = useState(false);
   const [language, setLanguage] = useState('darija');
+  const [symptoms, setSymptoms] = useState('');
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -84,6 +85,39 @@ function App() {
     }
   };
 
+  const handleSymptomCheck = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_URL}/terms/symptoms`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ symptoms: symptoms.split(',').map(s => s.trim()) }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.conditions && data.conditions.length > 0) {
+        addBotMessage("Based on the symptoms, here are some possible conditions:", data.conditions);
+      } else {
+        addBotMessage("No specific conditions found for these symptoms. Please consult a healthcare professional for accurate diagnosis.");
+      }
+    } catch (error) {
+      console.error('Error processing symptoms:', error);
+      setError(error.message);
+      addBotMessage("Sorry, there was an error processing your symptoms. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -117,20 +151,25 @@ function App() {
                     {message.terms.map((term, termIndex) => (
                       <ListItem key={termIndex}>
                         <Paper elevation={1} sx={{ p: 1, width: '100%' }}>
-                          <Typography variant="h6">{term.darija_medical_term}</Typography>
-                          <Typography variant="body2">Category: {term.category_french}</Typography>
-                          <Typography variant="body2">French: {term.term_french}</Typography>
-                          <Typography variant="body2">English: {term.term_english}</Typography>
-                          <Typography variant="body2" sx={{ mt: 1 }}>Description: {term.contextual_description_french}</Typography>
-                          <Typography variant="body2" sx={{ mt: 1 }}>Example Scenario: {term.example_scenario}</Typography>
-                          <Button onClick={() => speak(term.darija_medical_term, 'ar-MA')} size="small" startIcon={<VolumeUp />}>
+                          <Typography variant="h6">{term.darija}</Typography>
+                          <Typography variant="body2">Category: {term.category_english} ({term.category_darija})</Typography>
+                          <Typography variant="body2">English: {term.explanation_english}</Typography>
+                          <Typography variant="body2" sx={{ mt: 1 }}>Description (Darija): {term.detailed_description_darija}</Typography>
+                          <Typography variant="body2">French: {term.french}</Typography>
+                          <Typography variant="body2">Spanish: {term.spanish}</Typography>
+                          <Typography variant="body2">Italian: {term.italian}</Typography>
+                          <Typography variant="body2">German: {term.german}</Typography>
+                          <Typography variant="body2">Dutch: {term.dutch}</Typography>
+                          <Typography variant="body2">Arabic: {term.arabic}</Typography>
+                          <Typography variant="body2" sx={{ mt: 1 }}>Contextual Information: {term.contextual_info}</Typography>
+                          <Button onClick={() => speak(term.darija, 'ar-MA')} size="small" startIcon={<VolumeUp />}>
                             Darija
                           </Button>
-                          <Button onClick={() => speak(term.term_french, 'fr-FR')} size="small" startIcon={<VolumeUp />}>
-                            French
-                          </Button>
-                          <Button onClick={() => speak(term.term_english, 'en-US')} size="small" startIcon={<VolumeUp />}>
+                          <Button onClick={() => speak(term.explanation_english, 'en-US')} size="small" startIcon={<VolumeUp />}>
                             English
+                          </Button>
+                          <Button onClick={() => speak(term.arabic, 'ar')} size="small" startIcon={<VolumeUp />}>
+                            Arabic
                           </Button>
                         </Paper>
                       </ListItem>
@@ -152,12 +191,13 @@ function App() {
           label="Language"
         >
           <MenuItem value="darija">Darija</MenuItem>
-          <MenuItem value="french">French</MenuItem>
           <MenuItem value="english">English</MenuItem>
+          <MenuItem value="french">French</MenuItem>
+          <MenuItem value="arabic">Arabic</MenuItem>
         </Select>
       </FormControl>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', marginBottom: '20px' }}>
         <TextField
           fullWidth
           value={input}
@@ -170,6 +210,20 @@ function App() {
           {isLoading ? <CircularProgress size={24} /> : 'Send'}
         </Button>
       </form>
+
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Symptom Checker
+      </Typography>
+      <TextField
+        fullWidth
+        value={symptoms}
+        onChange={(e) => setSymptoms(e.target.value)}
+        placeholder="Enter symptoms separated by commas"
+        sx={{ mb: 1 }}
+      />
+      <Button onClick={handleSymptomCheck} variant="contained" disabled={isLoading || !symptoms}>
+        Check Symptoms
+      </Button>
     </Container>
   );
 }
