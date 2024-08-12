@@ -1,13 +1,22 @@
 {
   "files": {
-    "main.css": "/darija-medical-chatbot/static/css/main.e6c13ad2.css",
-    "main.js": "/darija-medical-chatbot/static/js/main.302d17fa.js",
+    "main.css": "/darija-medical-chatbot/static/css/main.1fc973a9.chunk.css",
+    "main.js": "/darija-medical-chatbot/static/js/main.a1b21766.chunk.js",
+    "main.js.map": "/darija-medical-chatbot/static/js/main.a1b21766.chunk.js.map",
+    "runtime-main.js": "/darija-medical-chatbot/static/js/runtime-main.75040b5d.js",
+    "runtime-main.js.map": "/darija-medical-chatbot/static/js/runtime-main.75040b5d.js.map",
+    "static/js/2.8afadfa2.chunk.js": "/darija-medical-chatbot/static/js/2.8afadfa2.chunk.js",
+    "static/js/2.8afadfa2.chunk.js.map": "/darija-medical-chatbot/static/js/2.8afadfa2.chunk.js.map",
     "index.html": "/darija-medical-chatbot/index.html",
-    "main.e6c13ad2.css.map": "/darija-medical-chatbot/static/css/main.e6c13ad2.css.map",
-    "main.302d17fa.js.map": "/darija-medical-chatbot/static/js/main.302d17fa.js.map"
+    "precache-manifest.f3379b7fbaf3d728ff5d517e01cf9e34.js": "/darija-medical-chatbot/precache-manifest.f3379b7fbaf3d728ff5d517e01cf9e34.js",
+    "service-worker.js": "/darija-medical-chatbot/service-worker.js",
+    "static/css/main.1fc973a9.chunk.css.map": "/darija-medical-chatbot/static/css/main.1fc973a9.chunk.css.map",
+    "static/js/2.8afadfa2.chunk.js.LICENSE.txt": "/darija-medical-chatbot/static/js/2.8afadfa2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/css/main.e6c13ad2.css",
-    "static/js/main.302d17fa.js"
+    "static/js/runtime-main.75040b5d.js",
+    "static/js/2.8afadfa2.chunk.js",
+    "static/css/main.1fc973a9.chunk.css",
+    "static/js/main.a1b21766.chunk.js"
   ]
 }
